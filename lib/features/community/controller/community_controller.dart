@@ -139,4 +139,14 @@ class CommunityController extends StateNotifier<bool> {
   Stream<List<Community>> searchCommunity(String query) {
     return _communityRepository.searchCommunity(query);
   }
+
+  void addModsToCommunity(
+      String communityName, List<String> uids, BuildContext context) async {
+    final res =
+        await _communityRepository.addModsToCommunity(communityName, uids);
+    res.fold(
+      (l) => showSnackbar(context, l.message),
+      (r) => Routemaster.of(context).pop(),
+    );
+  }
 }
