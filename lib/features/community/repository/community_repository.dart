@@ -74,7 +74,7 @@ class CommunityRepository {
         (event) => Community.fromMap(event.data() as Map<String, dynamic>));
   }
 
-  FutureEither editCommunity(Community community) async {
+  FutureVoid editCommunity(Community community) async {
     try {
       return right(_communities.doc(community.name).update(community.toMap()));
     } on FirebaseException catch (e) {
