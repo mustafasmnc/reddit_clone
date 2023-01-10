@@ -1,6 +1,3 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
-
 import 'package:flutter/foundation.dart';
 
 class Post {
@@ -80,7 +77,7 @@ class Post {
       'upvotes': upvotes,
       'downvotes': downvotes,
       'commentCount': commentCount,
-      'userName': username,
+      'username': username,
       'uid': uid,
       'type': type,
       'createdAt': createdAt.millisecondsSinceEpoch,
@@ -109,7 +106,7 @@ class Post {
 
   @override
   String toString() {
-    return 'Post(id: $id, title: $title, link: $link, description: $description, communityName: $communityName, communityProfilePic: $communityProfilePic, upvotes: $upvotes, downvotes: $downvotes, commentCount: $commentCount, userName: $username, uid: $uid, type: $type, createdAt: $createdAt, awards: $awards)';
+    return 'Post(id: $id, title: $title, link: $link, description: $description, communityName: $communityName, communityProfilePic: $communityProfilePic, upvotes: $upvotes, downvotes: $downvotes, commentCount: $commentCount, username: $username, uid: $uid, type: $type, createdAt: $createdAt, awards: $awards)';
   }
 
   @override

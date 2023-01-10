@@ -48,6 +48,7 @@ dependencies:
   file_picker: ^5.2.4
   shared_preferences: ^2.0.15
   uuid: ^3.0.7
+  any_link_preview: ^3.0.0
 
 dev_dependencies:
   flutter_test:
