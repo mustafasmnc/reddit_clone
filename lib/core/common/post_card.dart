@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/core/constants/constants.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
+import 'package:reddit_clone/features/post/controller/post_controller.dart';
 import 'package:reddit_clone/models/post_model.dart';
 import 'package:reddit_clone/theme/palette.dart';
 
 class PostCard extends ConsumerWidget {
   final Post post;
   const PostCard({super.key, required this.post});
+
+  void deletePost(WidgetRef ref, BuildContext context) async {
+    ref.read(postControllerProvider.notifier).deletePost(post, context);
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -71,7 +76,7 @@ class PostCard extends ConsumerWidget {
                               ),
                               if (post.uid == user.uid)
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () => deletePost(ref, context),
                                   icon: Icon(
                                     Icons.delete,
                                     color: Pallete.redColor,
@@ -94,7 +99,8 @@ class PostCard extends ConsumerWidget {
                               height: MediaQuery.of(context).size.height * 0.35,
                               width: double.infinity,
                               child: Padding(
-                                padding: const EdgeInsets.only(right: 15,top: 5),
+                                padding:
+                                    const EdgeInsets.only(right: 15, top: 5),
                                 child: Image.network(
                                   post.link!,
                                   fit: BoxFit.cover,
@@ -102,16 +108,14 @@ class PostCard extends ConsumerWidget {
                               ),
                             ),
                           if (isTypeLink)
-                            SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.35,
-                              width: double.infinity,
-                              child: Padding(
-                                padding: const EdgeInsets.only(right: 15,top: 5),
-                                child: AnyLinkPreview(
-                                  displayDirection:
-                                      UIDirection.uiDirectionHorizontal,
-                                  link: post.link!,
-                                ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 10)
+                                      .copyWith(top: 5, right: 15),
+                              child: AnyLinkPreview(
+                                displayDirection:
+                                    UIDirection.uiDirectionHorizontal,
+                                link: post.link!,
                               ),
                             ),
                           if (isTypeText)
