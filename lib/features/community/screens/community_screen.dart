@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/core/common/error_text.dart';
 import 'package:reddit_clone/core/common/loader.dart';
+import 'package:reddit_clone/core/common/post_card.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
 import 'package:reddit_clone/features/community/controller/community_controller.dart';
 import 'package:reddit_clone/models/community_model.dart';
@@ -107,7 +108,25 @@ class CommunityScreen extends ConsumerWidget {
                   )
                 ];
               },
-              body: Container(),
+              body: ref.watch(getCommunityPostsProvider(name)).when(
+                    data: (data) {
+                      return ListView.builder(
+                          itemCount: data.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            final post = data[index];
+                            return Padding(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 5,
+                                vertical: 3,
+                              ),
+                              child: PostCard(post: post),
+                            );
+                          });
+                    },
+                    error: (error, stackTrace) =>
+                        ErrorText(errorText: error.toString()),
+                    loading: () => const Loader(),
+                  ),
             ),
             error: (error, stackTrace) =>
                 ErrorText(errorText: error.toString()),
