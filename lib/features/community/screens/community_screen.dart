@@ -117,7 +117,6 @@ class CommunityScreen extends ConsumerWidget {
                             return Padding(
                               padding: const EdgeInsets.symmetric(
                                 horizontal: 5,
-                                vertical: 3,
                               ),
                               child: PostCard(post: post),
                             );
