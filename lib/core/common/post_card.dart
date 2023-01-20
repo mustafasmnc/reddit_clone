@@ -227,6 +227,10 @@ class PostCard extends ConsumerWidget {
                                         ErrorText(errorText: error.toString()),
                                     loading: () => const Loader(),
                                   ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.card_giftcard),
+                              )
                             ],
                           )
                         ],
