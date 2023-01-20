@@ -60,7 +60,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                           data: (data) {
                             return ListView.builder(
                               shrinkWrap: true,
-                              physics: ClampingScrollPhysics(),
+                              physics:const ClampingScrollPhysics(),
                               itemCount: data.length,
                               itemBuilder: (BuildContext context, int index) {
                                 final comment = data[index];
