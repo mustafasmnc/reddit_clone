@@ -49,6 +49,7 @@ class PostCard extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final currentTheme = ref.watch(themeNotifierProvider);
     final user = ref.watch(userProvider)!;
+    final isGuest = user.isAuthenticated;
     final isTypeImage = post.type == 'image';
     final isTypeText = post.type == 'text';
     final isTypeLink = post.type == 'link';
@@ -188,7 +189,8 @@ class PostCard extends ConsumerWidget {
                               Row(
                                 children: [
                                   IconButton(
-                                    onPressed: () => upvotePost(ref),
+                                    onPressed:
+                                        isGuest ? () {} : () => upvotePost(ref),
                                     icon: Icon(
                                       Constants.up,
                                       size: 25,
@@ -202,7 +204,9 @@ class PostCard extends ConsumerWidget {
                                     style: const TextStyle(fontSize: 17),
                                   ),
                                   IconButton(
-                                    onPressed: () => downvotePost(ref),
+                                    onPressed: isGuest
+                                        ? () {}
+                                        : () => downvotePost(ref),
                                     icon: Icon(
                                       Constants.down,
                                       size: 25,
@@ -251,46 +255,53 @@ class PostCard extends ConsumerWidget {
                                     loading: () => const Loader(),
                                   ),
                               IconButton(
-                                onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => Dialog(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8),
-                                        child: GridView.builder(
-                                          shrinkWrap: true,
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                                  crossAxisCount: 4),
-                                          itemCount: user.awards.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            final award = user.awards[index];
-                                            return user.awards.isNotEmpty
-                                                ? Padding(
-                                                    padding:
-                                                        const EdgeInsets.all(
-                                                            8.0),
-                                                    child: GestureDetector(
-                                                      onTap: () => awardPost(
-                                                        ref,
-                                                        award,
-                                                        context,
-                                                      ),
-                                                      child: Image.asset(
-                                                          Constants
-                                                              .awards[award]!),
-                                                    ),
-                                                  )
-                                                : const ErrorText(
-                                                    errorText:
-                                                        'No Awards Found!');
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                  );
-                                },
+                                onPressed: isGuest
+                                    ? () {}
+                                    : () {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) => Dialog(
+                                            child: Padding(
+                                              padding: const EdgeInsets.all(8),
+                                              child: GridView.builder(
+                                                shrinkWrap: true,
+                                                gridDelegate:
+                                                    const SliverGridDelegateWithFixedCrossAxisCount(
+                                                        crossAxisCount: 4),
+                                                itemCount: user.awards.length,
+                                                itemBuilder:
+                                                    (BuildContext context,
+                                                        int index) {
+                                                  final award =
+                                                      user.awards[index];
+                                                  return user.awards.isNotEmpty
+                                                      ? Padding(
+                                                          padding:
+                                                              const EdgeInsets
+                                                                  .all(8.0),
+                                                          child:
+                                                              GestureDetector(
+                                                            onTap: () =>
+                                                                awardPost(
+                                                              ref,
+                                                              award,
+                                                              context,
+                                                            ),
+                                                            child: Image.asset(
+                                                                Constants
+                                                                        .awards[
+                                                                    award]!),
+                                                          ),
+                                                        )
+                                                      : const ErrorText(
+                                                          errorText:
+                                                              'No Awards Found!');
+                                                },
+                                              ),
+                                            ),
+                                          ),
+                                        );
+                                      },
                                 icon: const Icon(Icons.card_giftcard_outlined),
                               )
                             ],
