@@ -28,8 +28,8 @@ class CommunityScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final user = ref.watch(userProvider)!;
-    final isGuest = user.isAuthenticated;
+    final  user = ref.watch(userProvider)!;
+    final  isGuest = !user.isAuthenticated;
 
     return Scaffold(
       body: ref.watch(getCommunityByNameProvider(name)).when(

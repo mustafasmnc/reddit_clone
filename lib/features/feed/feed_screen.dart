@@ -14,33 +14,44 @@ class FeedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
-    final isGuest = user.isAuthenticated;
+    final isGuest = !user.isAuthenticated;
 
     if (!isGuest) {
       return ref.watch(userCommunitiesProvider).when(
-            data: (communities) =>
-                ref.watch(userPostsProvider(communities)).when(
-                      data: (data) {
-                        return ListView.builder(
-                            itemCount: data.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              final post = data[index];
-                              return Padding(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 5,
-                                ),
-                                child: PostCard(post: post),
-                              );
-                            });
-                      },
-                      error: (error, stackTrace) {
-                        if (kDebugMode) {
-                          print(error);
-                        }
-                        return ErrorText(errorText: error.toString());
-                      },
-                      loading: () => const Loader(),
-                    ),
+            data: (communities) => ref
+                .watch(userPostsProvider(communities))
+                .when(
+                  data: (data) {
+                    return SingleChildScrollView(
+                      child: Column(
+                        children: [
+                          const SizedBox(height: kIsWeb ? 20 : 5),
+                          ListView.builder(
+                              shrinkWrap: true,
+                              itemCount: data.length,
+                              physics: const BouncingScrollPhysics(),
+                              itemBuilder: (BuildContext context, int index) {
+                                final post = data[index];
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 5,
+                                  ),
+                                  child: PostCard(post: post),
+                                );
+                              }),
+                          const SizedBox(height: kIsWeb ? 50 : 20)
+                        ],
+                      ),
+                    );
+                  },
+                  error: (error, stackTrace) {
+                    if (kDebugMode) {
+                      print(error);
+                    }
+                    return ErrorText(errorText: error.toString());
+                  },
+                  loading: () => const Loader(),
+                ),
             error: (error, stackTrace) =>
                 ErrorText(errorText: error.toString()),
             loading: () => const Loader(),
@@ -50,17 +61,27 @@ class FeedScreen extends ConsumerWidget {
     return ref.watch(userCommunitiesProvider).when(
           data: (communities) => ref.watch(guestPostsProvider).when(
                 data: (data) {
-                  return ListView.builder(
-                      itemCount: data.length,
-                      itemBuilder: (BuildContext context, int index) {
-                        final post = data[index];
-                        return Padding(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 5,
-                          ),
-                          child: PostCard(post: post),
-                        );
-                      });
+                  return SingleChildScrollView(
+                    child: Column(
+                      children: [
+                        const SizedBox(height: kIsWeb ? 20 : 5),
+                        ListView.builder(
+                            shrinkWrap: true,
+                            itemCount: data.length,
+                            physics: const BouncingScrollPhysics(),
+                            itemBuilder: (BuildContext context, int index) {
+                              final post = data[index];
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 5,
+                                ),
+                                child: PostCard(post: post),
+                              );
+                            }),
+                        const SizedBox(height: kIsWeb ? 50 : 20),
+                      ],
+                    ),
+                  );
                 },
                 error: (error, stackTrace) {
                   if (kDebugMode) {

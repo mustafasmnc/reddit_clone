@@ -5,7 +5,7 @@ import 'package:reddit_clone/core/utils.dart';
 import 'package:reddit_clone/features/auth/repository/auth_repository.dart';
 import 'package:reddit_clone/models/user_models.dart';
 
-final userProvider = StateProvider<UserModel?>((ref) => null);
+var userProvider = StateProvider<UserModel?>((ref) => null);
 
 final authControllerProvider = StateNotifierProvider<AuthController, bool>(
   (ref) => AuthController(

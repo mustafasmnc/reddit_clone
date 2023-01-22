@@ -49,11 +49,14 @@ class ProfileDrawer extends ConsumerWidget {
             leading: Icon(Icons.logout, color: Pallete.redColor),
             onTap: () => logOut(ref),
           ),
-          Switch.adaptive(
-            value: ref.watch(themeNotifierProvider.notifier).mode ==
-                ThemeMode.dark,
-            onChanged: (val) => toggleTheme(ref),
-          )
+          ListTile(
+            title: const Text('Theme'),
+            leading: Switch.adaptive(
+              value: ref.watch(themeNotifierProvider.notifier).mode ==
+                  ThemeMode.dark,
+              onChanged: (val) => toggleTheme(ref),
+            ),
+          ),
         ],
       )),
     );

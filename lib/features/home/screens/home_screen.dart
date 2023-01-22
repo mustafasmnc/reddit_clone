@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/core/constants/constants.dart';
@@ -7,6 +8,7 @@ import 'package:reddit_clone/features/home/delegates/search_community_delegate.d
 import 'package:reddit_clone/features/home/drawers/community_list_drawer.dart';
 import 'package:reddit_clone/features/home/drawers/profile_drawer.dart';
 import 'package:reddit_clone/theme/palette.dart';
+import 'package:routemaster/routemaster.dart';
 
 class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
@@ -35,7 +37,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider)!;
-    final isGuest = user.isAuthenticated;
+    final isGuest = !user.isAuthenticated;
     final currentTheme = ref.watch(themeNotifierProvider);
     return Scaffold(
       appBar: AppBar(
@@ -55,6 +57,12 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                   context: context, delegate: SearchCommunityDelegate(ref));
             },
           ),
+          if (kIsWeb)
+            IconButton(
+                onPressed: () {
+                  Routemaster.of(context).push('/add-post');
+                },
+                icon: const Icon(Icons.add)),
           Builder(builder: (context) {
             return IconButton(
               icon: CircleAvatar(
@@ -68,7 +76,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       body: Constants.tabWidgets[_page],
       drawer: const CommunityListDrawer(),
       endDrawer: isGuest ? null : const ProfileDrawer(),
-      bottomNavigationBar: isGuest
+      bottomNavigationBar: isGuest || kIsWeb
           ? null
           : CupertinoTabBar(
               activeColor: currentTheme.iconTheme.color,
